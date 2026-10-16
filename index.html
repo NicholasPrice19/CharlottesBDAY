@@ -1,1 +1,800 @@
+<!doctype html>
+<!--
+  ============================================================
+  BIRTHDAY QUIZ: single-file version
+  To edit the quiz, change the QUIZ CONTENT section just below.
+  Colours and fonts are at the top of the <style> section.
+  You don't need to touch anything else.
+  ============================================================
+-->
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happy Birthday</title>
+  <meta name="description" content="A birthday quiz.">
+  <!-- ==================== QUIZ CONTENT: EDIT HERE ==================== -->
+  <script>
+/*
+  ============================================================
+  Everything she sees on the site comes from this section.
+  ============================================================
 
+  Each question can be one of two kinds:
+
+  1. Open question (she says the answer out loud, then you reveal it):
+       { q: "Question text", answer: "The answer", note: "Why I love it" }
+
+  2. Multiple choice (she taps an option and it marks itself):
+       { q: "Question text",
+         choices: ["Option A", "Option B", "Option C", "Option D"],
+         answer: "Option B",            // must match one choice exactly
+         note: "Why I love it" }
+
+  Optional on any question:
+       photo: "first-date.jpg"   // upload the image to the repo next to index.html
+       photoCaption: "Brunswick, March 2023"
+
+  Keep the total at 24 questions across all rounds. Rounds can have any size.
+  Line breaks in long text: use \n
+*/
+
+window.QUIZ = {
+  herName: "Her Name",
+  fromName: "Nick",
+  birthdayLabel: "Her birthday, 2026",
+
+  intro:
+    "24 questions. Every answer is something I love about you. " +
+    "Say your answer out loud, then tap to reveal it. Be honest about your score.",
+
+  rounds: [
+    {
+      title: "Round 1: The beginning",
+      questions: [
+        {
+          q: "Where did we first meet?",
+          answer: "[Where you met]",
+          note: "[What you remember about seeing her that day]"
+        },
+        {
+          q: "What was the first thing I ever said to you?",
+          choices: ["[Option A]", "[Option B]", "[Option C]", "[Option D]"],
+          answer: "[Option B]",
+          note: "[Why it still makes you laugh]"
+        },
+        {
+          q: "Where was our first date?",
+          answer: "[Place]",
+          note: "[A detail from that night you've never told her]",
+          photo: "",
+          photoCaption: ""
+        },
+        {
+          q: "What did you order on our first date?",
+          answer: "[Her order]",
+          note: "[Something small you noticed]"
+        },
+        {
+          q: "When did I know I liked you?",
+          answer: "[The moment]",
+          note: "[What she did]"
+        },
+        {
+          q: "What was the first song we both loved?",
+          choices: ["[Song A]", "[Song B]", "[Song C]", "[Song D]"],
+          answer: "[Song C]",
+          note: "[Where you were when you heard it]"
+        }
+      ]
+    },
+
+    {
+      title: "Round 2: The little things",
+      questions: [
+        { q: "What do you always do when you're thinking hard?", answer: "[Her habit]", note: "[Why it's cute]" },
+        { q: "What's your go-to coffee order?", answer: "[Order]", note: "[Something about her mornings]" },
+        { q: "What word do you say that nobody else says?", answer: "[Word]", note: "[When she says it]" },
+        { q: "Which of these is your worst habit?", choices: ["[A]", "[B]", "[C]", "[D]"], answer: "[A]", note: "[Why you secretly love it]" },
+        { q: "What's the face you pull when you're trying not to laugh?", answer: "[Describe it]", note: "[When you last saw it]" },
+        { q: "What do you hum when you cook?", answer: "[Song]", note: "[A kitchen memory]" }
+      ]
+    },
+
+    {
+      title: "Round 3: Us",
+      questions: [
+        { q: "What's our best trip so far?", answer: "[Trip]", note: "[Favourite moment from it]" },
+        { q: "What's our running joke?", answer: "[Joke]", note: "[Where it started]" },
+        { q: "What's the best meal we've cooked together?", answer: "[Meal]", note: "[What went wrong]" },
+        { q: "Which show did we binge the fastest?", choices: ["[Show A]", "[Show B]", "[Show C]", "[Show D]"], answer: "[Show D]", note: "[A night you remember]" },
+        { q: "What's my favourite photo of us?", answer: "[Describe it]", note: "[Why that one]" },
+        { q: "What's the thing we'll never agree on?", answer: "[The argument]", note: "[Why you'd never want to win it]" }
+      ]
+    },
+
+    {
+      title: "Round 4: Why you",
+      questions: [
+        { q: "What do I love most about how you treat people?", answer: "[Answer]", note: "[An example]" },
+        { q: "What do you do better than anyone I know?", answer: "[Answer]", note: "[An example]" },
+        { q: "When did you make me proudest?", answer: "[Moment]", note: "[Why]" },
+        { q: "What's the best advice you've ever given me?", answer: "[Advice]", note: "[What happened after]" },
+        { q: "What do I want to do with you next year?", answer: "[Plan]", note: "[Why you can't wait]" },
+        { q: "What's the 24th thing I love about you?", answer: "[The big one]", note: "[Say it properly]" }
+      ]
+    }
+  ],
+
+  // Shown after the last question is marked. Highest matching "min" wins.
+  scoreMessages: [
+    { min: 0, text: "Clearly I need to talk about myself more." },
+    { min: 12, text: "Not bad. You've been listening." },
+    { min: 18, text: "Very impressive. You know us well." },
+    { min: 24, text: "Perfect score. Of course." }
+  ],
+
+  finalMessage:
+    "Happy birthday.\n" +
+    "[Write your birthday message here. A few lines is plenty.]\n" +
+    "Love, Nick"
+};
+
+  </script>
+  <!-- ==================== END OF QUIZ CONTENT ==================== -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+/* ============================================================
+   Colours and fonts. Change these to restyle the whole site.
+   ============================================================ */
+:root {
+  --blush: #FFE4EC;     /* page background */
+  --pink: #FF2E7E;      /* main accent: big numbers, buttons */
+  --pink-soft: #FFB8CF; /* borders, hovers */
+  --plum: #2A0F2E;      /* text */
+  --butter: #FFC93C;    /* handwritten note slips */
+  --paper: #FFFFFF;
+
+  --font-main: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+
+  --measure: 44rem;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--blush);
+  color: var(--plum);
+  font-family: var(--font-main);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+button { font: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--plum);
+  outline-offset: 3px;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 3rem 1rem 2.5rem;
+}
+
+.hero__date {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.hero__title {
+  margin: 0;
+  font-weight: 800;
+  line-height: 0.85;
+}
+
+.hero__count {
+  display: block;
+  font-size: clamp(9rem, 42vw, 19rem);
+  letter-spacing: -0.06em;
+  color: var(--pink);
+  font-variation-settings: "opsz" 96;
+}
+
+.hero__line {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96;
+}
+
+.hero__intro {
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+  font-size: 1.1875rem;
+}
+
+/* ---------- Sticky tally ---------- */
+.tally {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  background: var(--plum);
+  color: var(--paper);
+  font-weight: 600;
+}
+
+#tally-score { color: var(--butter); }
+
+/* ---------- Rounds ---------- */
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.round { margin-top: 3.5rem; }
+
+.round__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.round__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Question ---------- */
+.q {
+  display: grid;
+  grid-template-columns: 4.25rem 1fr;
+  gap: 0 1rem;
+  padding: 1.5rem 0;
+  border-top: 2px solid var(--plum);
+}
+
+.q__num {
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--pink);
+  letter-spacing: -0.04em;
+  font-variation-settings: "opsz" 96;
+}
+
+.q.is-correct .q__num { color: var(--plum); }
+
+.q__text {
+  margin: 0.25rem 0 1rem;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Buttons */
+.btn {
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
+  border: 2px solid var(--plum);
+  border-radius: 999px;
+  background: var(--pink);
+  color: var(--paper);
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { background: var(--plum); }
+
+.btn--yes { background: var(--plum); }
+.btn--yes:hover { background: var(--pink); }
+.btn--no { background: var(--paper); color: var(--plum); }
+.btn--no:hover { background: var(--pink-soft); }
+
+.btn--quiet {
+  background: transparent;
+  color: var(--plum);
+}
+.btn--quiet:hover { background: var(--pink-soft); }
+
+/* Multiple choice */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.5rem;
+}
+
+.choice {
+  min-height: 2.75rem;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid var(--plum);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  color: var(--plum);
+  text-align: left;
+  cursor: pointer;
+}
+.choice:hover:not(:disabled) { background: var(--pink-soft); }
+.choice:disabled { cursor: default; opacity: 0.45; }
+.choice.is-answer { background: var(--pink); color: var(--paper); opacity: 1; }
+.choice.is-miss { text-decoration: line-through; opacity: 0.8; }
+
+/* Revealed answer */
+.reveal { margin-top: 1rem; }
+
+.reveal__answer {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.reveal__note {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 1rem 0.7rem;
+  background: var(--butter);
+  font-family: var(--font-hand);
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.15;
+  transform: rotate(-1.2deg);
+  box-shadow: 3px 3px 0 var(--plum);
+}
+
+.reveal__photo {
+  margin: 1.25rem 0 0;
+  max-width: 22rem;
+  padding: 0.6rem 0.6rem 0.4rem;
+  background: var(--paper);
+  border: 2px solid var(--plum);
+  transform: rotate(1deg);
+}
+.reveal__photo img { display: block; width: 100%; height: auto; }
+.reveal__photo figcaption {
+  padding-top: 0.4rem;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.mark {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.verdict {
+  margin: 1rem 0 0;
+  font-weight: 600;
+}
+.q.is-correct .verdict { color: var(--pink); }
+
+/* The one reveal animation: the note slips in when she opens an answer */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal.is-new .reveal__note,
+  .reveal.is-new .reveal__photo {
+    animation: slip-in 420ms cubic-bezier(.2,.9,.3,1.3) both;
+  }
+  .reveal.is-new .reveal__photo { animation-delay: 90ms; }
+}
+@keyframes slip-in {
+  from { opacity: 0; transform: translateY(10px) rotate(-5deg); }
+}
+
+[hidden] { display: none !important; }
+
+/* ---------- Finale ---------- */
+.finale {
+  max-width: var(--measure);
+  margin: 4rem auto 0;
+  padding: 2.5rem 1rem;
+  background: var(--pink);
+  color: var(--paper);
+  scroll-margin-top: 3.5rem;
+}
+
+.finale__score {
+  margin: 0;
+  font-size: clamp(5rem, 24vw, 10rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-variation-settings: "opsz" 96;
+}
+
+.finale__verdict {
+  margin: 0.75rem 0 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.finale__letter {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--paper);
+  color: var(--plum);
+  font-family: var(--font-hand);
+  font-size: 1.9rem;
+  line-height: 1.25;
+  box-shadow: 5px 5px 0 var(--plum);
+}
+.finale__letter p { margin: 0 0 0.6rem; }
+.finale__letter p:last-child { margin-bottom: 0; }
+
+/* ---------- Footer ---------- */
+.footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 3rem 1rem 4rem;
+}
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .hero { padding-top: 4.5rem; }
+  .finale { padding: 3rem 2.5rem; }
+  .tally { padding-left: 1rem; padding-right: 1rem; }
+}
+
+@media (max-width: 30rem) {
+  .q { grid-template-columns: 3rem 1fr; gap: 0 0.75rem; }
+  .q__num { font-size: 2.5rem; }
+  .q__text { font-size: 1.1875rem; }
+  .reveal__note { font-size: 1.55rem; }
+}
+
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <p class="hero__date" id="birthday"></p>
+    <h1 class="hero__title">
+      <span class="hero__count" id="count">24</span>
+      <span class="hero__line">things I love about <span id="her-name"></span></span>
+    </h1>
+    <p class="hero__intro" id="intro"></p>
+  </header>
+
+  <div class="tally" role="status" aria-live="polite">
+    <span id="tally-score">Score 0</span>
+    <span id="tally-progress">0 of 24 answered</span>
+  </div>
+
+  <main id="quiz"></main>
+
+  <section class="finale" id="finale" hidden aria-labelledby="finale-score">
+    <p class="finale__score" id="finale-score"></p>
+    <p class="finale__verdict" id="finale-verdict"></p>
+    <div class="finale__letter" id="finale-letter"></div>
+  </section>
+
+  <footer class="footer">
+    <button type="button" class="btn btn--quiet" id="reset">Start the quiz again</button>
+  </footer>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <script>
+(function () {
+  "use strict";
+
+  var QUIZ = window.QUIZ;
+  var STORAGE_KEY = "birthday-quiz-progress";
+
+  // Flatten rounds into one numbered list.
+  var questions = [];
+  QUIZ.rounds.forEach(function (round, r) {
+    round.questions.forEach(function (item) {
+      questions.push({ round: r, data: item });
+    });
+  });
+  var total = questions.length;
+
+  // state[i] = { picked: string|null, revealed: bool, correct: true|false|null }
+  var state = loadState();
+
+  function loadState() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved && saved.length === total) return saved;
+    } catch (e) { /* storage unavailable */ }
+    return questions.map(function () {
+      return { picked: null, revealed: false, correct: null };
+    });
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
+  function paragraphs(container, text) {
+    String(text || "").split("\n").forEach(function (line) {
+      if (line.trim()) container.appendChild(el("p", null, line));
+    });
+  }
+
+  // ---------- Header ----------
+  document.getElementById("her-name").textContent = QUIZ.herName;
+  document.getElementById("birthday").textContent = QUIZ.birthdayLabel || "";
+  document.getElementById("intro").textContent = QUIZ.intro || "";
+  document.getElementById("count").textContent = total;
+  document.title = "Happy Birthday, " + QUIZ.herName;
+
+  // ---------- Quiz ----------
+  var quizRoot = document.getElementById("quiz");
+  var nodes = [];
+
+  QUIZ.rounds.forEach(function (round, r) {
+    var section = el("section", "round");
+    section.setAttribute("aria-label", round.title);
+    section.appendChild(el("h2", "round__title", round.title));
+    var list = el("ol", "round__list");
+    section.appendChild(list);
+
+    questions.forEach(function (item, i) {
+      if (item.round !== r) return;
+      list.appendChild(buildQuestion(item.data, i));
+    });
+
+    quizRoot.appendChild(section);
+  });
+
+  function buildQuestion(data, i) {
+    var li = el("li", "q");
+    li.id = "q" + (i + 1);
+    li.appendChild(el("span", "q__num", String(i + 1)));
+
+    var body = el("div", "q__body");
+    body.appendChild(el("p", "q__text", data.q));
+
+    var controls = el("div", "q__controls");
+    var choiceButtons = [];
+
+    if (Array.isArray(data.choices) && data.choices.length) {
+      var choices = el("div", "choices");
+      data.choices.forEach(function (choice) {
+        var b = el("button", "choice", choice);
+        b.type = "button";
+        b.addEventListener("click", function () { pickChoice(i, choice); });
+        choices.appendChild(b);
+        choiceButtons.push(b);
+      });
+      controls.appendChild(choices);
+    } else {
+      var show = el("button", "btn", "Show the answer");
+      show.type = "button";
+      show.addEventListener("click", function () { reveal(i); });
+      controls.appendChild(show);
+    }
+    body.appendChild(controls);
+
+    // Revealed content
+    var reveal_ = el("div", "reveal");
+    reveal_.hidden = true;
+    // Multiple choice already highlights the answer, so only open questions print it.
+    if (!choiceButtons.length) reveal_.appendChild(el("p", "reveal__answer", data.answer));
+    if (data.note) reveal_.appendChild(el("p", "reveal__note", data.note));
+    if (data.photo) {
+      var fig = el("figure", "reveal__photo");
+      var img = el("img");
+      img.src = data.photo;
+      img.alt = data.photoCaption || "";
+      img.loading = "lazy";
+      fig.appendChild(img);
+      if (data.photoCaption) fig.appendChild(el("figcaption", null, data.photoCaption));
+      reveal_.appendChild(fig);
+    }
+
+    var mark = el("div", "mark");
+    mark.hidden = true;
+    var got = el("button", "btn btn--yes", "I got it");
+    var missed = el("button", "btn btn--no", "I missed it");
+    got.type = missed.type = "button";
+    got.addEventListener("click", function () { markOpen(i, true); });
+    missed.addEventListener("click", function () { markOpen(i, false); });
+    mark.appendChild(got);
+    mark.appendChild(missed);
+
+    var verdict = el("p", "verdict");
+    verdict.hidden = true;
+
+    body.appendChild(reveal_);
+    body.appendChild(mark);
+    body.appendChild(verdict);
+    li.appendChild(body);
+
+    nodes[i] = { li: li, controls: controls, choiceButtons: choiceButtons, reveal: reveal_, mark: mark, verdict: verdict };
+    return li;
+  }
+
+  function pickChoice(i, choice) {
+    if (state[i].correct !== null) return;
+    var data = questions[i].data;
+    state[i] = { picked: choice, revealed: true, correct: choice === data.answer };
+    commit(i, true);
+  }
+
+  function reveal(i) {
+    state[i].revealed = true;
+    commit(i, true);
+  }
+
+  function markOpen(i, correct) {
+    state[i].correct = correct;
+    commit(i, true);
+  }
+
+  function commit(i, animate) {
+    saveState();
+    paint(i, animate);
+    updateTally(animate);
+  }
+
+  function paint(i, animate) {
+    var s = state[i];
+    var n = nodes[i];
+    var data = questions[i].data;
+    var isChoice = n.choiceButtons.length > 0;
+
+    n.li.classList.toggle("is-revealed", s.revealed);
+    n.li.classList.toggle("is-correct", s.correct === true);
+    n.li.classList.toggle("is-wrong", s.correct === false);
+
+    if (isChoice) {
+      n.choiceButtons.forEach(function (b) {
+        var text = b.textContent;
+        var locked = s.correct !== null;
+        b.disabled = locked;
+        b.classList.toggle("is-answer", locked && text === data.answer);
+        b.classList.toggle("is-miss", locked && text === s.picked && text !== data.answer);
+      });
+    } else {
+      n.controls.hidden = s.revealed;
+    }
+
+    n.reveal.hidden = !s.revealed;
+    if (animate && s.revealed) n.reveal.classList.add("is-new");
+
+    n.mark.hidden = isChoice || !s.revealed || s.correct !== null;
+    n.verdict.hidden = s.correct === null;
+    n.verdict.textContent = s.correct ? "Point scored" : "No point this time";
+  }
+
+  // ---------- Tally and finale ----------
+  function updateTally(animate) {
+    var score = 0, done = 0;
+    state.forEach(function (s) {
+      if (s.correct !== null) done++;
+      if (s.correct === true) score++;
+    });
+    document.getElementById("tally-score").textContent = "Score " + score;
+    document.getElementById("tally-progress").textContent = done + " of " + total + " answered";
+
+    var finale = document.getElementById("finale");
+    var finished = done === total;
+    var wasHidden = finale.hidden;
+    finale.hidden = !finished;
+    if (!finished) return;
+
+    document.getElementById("finale-score").textContent = score + " / " + total;
+    document.getElementById("finale-verdict").textContent = verdictFor(score);
+    var letter = document.getElementById("finale-letter");
+    letter.innerHTML = "";
+    paragraphs(letter, QUIZ.finalMessage);
+
+    if (animate && wasHidden) {
+      finale.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+      confetti();
+    }
+  }
+
+  function verdictFor(score) {
+    var best = "";
+    (QUIZ.scoreMessages || [])
+      .slice()
+      .sort(function (a, b) { return a.min - b.min; })
+      .forEach(function (m) { if (score >= m.min) best = m.text; });
+    return best;
+  }
+
+  document.getElementById("reset").addEventListener("click", function () {
+    state = questions.map(function () { return { picked: null, revealed: false, correct: null }; });
+    saveState();
+    nodes.forEach(function (n) { n.reveal.classList.remove("is-new"); });
+    for (var i = 0; i < total; i++) paint(i, false);
+    updateTally(false);
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  });
+
+  // ---------- Confetti ----------
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function confetti() {
+    if (prefersReducedMotion()) return;
+    var canvas = document.getElementById("confetti");
+    var ctx = canvas.getContext("2d");
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    ctx.scale(dpr, dpr);
+    var colours = ["#FF2E7E", "#FFC93C", "#2A0F2E", "#FF8FB5"];
+    var bits = [];
+    for (var k = 0; k < 160; k++) {
+      bits.push({
+        x: Math.random() * innerWidth,
+        y: -20 - Math.random() * innerHeight * 0.5,
+        w: 6 + Math.random() * 6,
+        h: 10 + Math.random() * 8,
+        vy: 2 + Math.random() * 3,
+        vx: -1.5 + Math.random() * 3,
+        rot: Math.random() * Math.PI,
+        vr: -0.1 + Math.random() * 0.2,
+        c: colours[k % colours.length]
+      });
+    }
+    var start = performance.now();
+    canvas.style.display = "block";
+    (function frame(t) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      bits.forEach(function (b) {
+        b.x += b.vx; b.y += b.vy; b.rot += b.vr;
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.rot);
+        ctx.fillStyle = b.c;
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.restore();
+      });
+      if (t - start < 4500) requestAnimationFrame(frame);
+      else { ctx.clearRect(0, 0, innerWidth, innerHeight); canvas.style.display = "none"; }
+    })(start);
+  }
+
+  // ---------- Initial paint ----------
+  for (var i = 0; i < total; i++) paint(i, false);
+  updateTally(false);
+})();
+
+  </script>
+</body>
+</html>
