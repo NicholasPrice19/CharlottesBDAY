@@ -58,33 +58,28 @@ window.QUIZ = {
           note: "Fortunately for you, you also share it with the lovely Chris & Steph Perry"
         },
         {
-          q: "What was the first thing I ever said to you?",
-          choices: ["[Option A]", "[Option B]", "[Option C]", "[Option D]"],
-          answer: "[Option B]",
-          note: "[Why it still makes you laugh]"
+          q: "What's your favourite colour?",
+          choices: ["Pink", "Orange", "Green", "Yellow"],
+          answer: "Orange",
+          note: "Pink just worked better for this formatting. Also, much to my surprise, not a complement of green."
         },
         {
-          q: "Where was our first date?",
-          answer: "[Place]",
-          note: "[A detail from that night you've never told her]",
-          photo: "",
-          photoCaption: ""
+          q: "What's your death row meal?",
+          answer: "Eggs and avo on toast"
         },
         {
-          q: "What did you order on our first date?",
-          answer: "[Her order]",
-          note: "[Something small you noticed]"
+          q: "What does Charlotte actually do for work?",
+          answer: "Reels, I think.",
+          note: "But I'm not even sure. Sorry."
         },
         {
-          q: "When did I know I liked you?",
-          answer: "[The moment]",
-          note: "[What she did]"
+          q: "What reward does Nick get when he's behaving?",
+          answer: "A banana Chobani Fit",
+          note: "With a questionable expiry date."
         },
         {
-          q: "What was the first song we both loved?",
-          choices: ["[Song A]", "[Song B]", "[Song C]", "[Song D]"],
-          answer: "[Song C]",
-          note: "[Where you were when you heard it]"
+          q: "What's the quickest way to die?",
+          answer: "Steal Charlotte's Tim Tams"
         }
       ]
     },
@@ -92,24 +87,34 @@ window.QUIZ = {
     {
       title: "Round 2: The little things",
       questions: [
-        { q: "What do you always do when you're thinking hard?", answer: "[Her habit]", note: "[Why it's cute]" },
-        { q: "What's your go-to coffee order?", answer: "[Order]", note: "[Something about her mornings]" },
-        { q: "What word do you say that nobody else says?", answer: "[Word]", note: "[When she says it]" },
-        { q: "Which of these is your worst habit?", choices: ["[A]", "[B]", "[C]", "[D]"], answer: "[A]", note: "[Why you secretly love it]" },
-        { q: "What's the face you pull when you're trying not to laugh?", answer: "[Describe it]", note: "[When you last saw it]" },
-        { q: "What do you hum when you cook?", answer: "[Song]", note: "[A kitchen memory]" }
+        { q: "What's your go-to coffee order?", answer: "Almond latte" },
+        { q: "Charlotte has a few stims she says regularly. List at least 3 of them.", answer: "Lush, [stim 2], [stim 3]" },
+        { q: "What's your favourite TV show?", answer: "How I Met Your Mother", note: "In English and French." },
+        { q: "What does Charlotte turn into during exams?", answer: "Academic weapon or lil minga", note: "Both are the right answer. ¿Por qué no los dos? (Why not both?)" },
+        { q: "List some of Charlotte's skills.", answer: "Gun skier, mediocre crossworder, terrible [finish this]" },
+        {
+          q: "Who are Charlotte's housemates?",
+          answer: "Matt, Chris and Elsa (+ Maddi Chong)",
+          photo: "",          // add the image file name here, e.g. "housemates.jpg"
+          photoCaption: ""
+        }
       ]
     },
 
     {
       title: "Round 3: Us",
       questions: [
-        { q: "What's our best trip so far?", answer: "[Trip]", note: "[Favourite moment from it]" },
-        { q: "What's our running joke?", answer: "[Joke]", note: "[Where it started]" },
-        { q: "What's the best meal we've cooked together?", answer: "[Meal]", note: "[What went wrong]" },
-        { q: "Which show did we binge the fastest?", choices: ["[Show A]", "[Show B]", "[Show C]", "[Show D]"], answer: "[Show D]", note: "[A night you remember]" },
-        { q: "What's my favourite photo of us?", answer: "[Describe it]", note: "[Why that one]" },
-        { q: "What's the thing we'll never agree on?", answer: "[The argument]", note: "[Why you'd never want to win it]" }
+        {
+          q: "What's my favourite photo of you?",
+          answer: "This one.",
+          photo: "",          // add the image file name here, e.g. "favourite.jpg"
+          photoCaption: ""
+        },
+        { q: "", answer: "" },
+        { q: "", answer: "" },
+        { q: "", answer: "" },
+        { q: "", answer: "" },
+        { q: "", answer: "" }
       ]
     },
 
@@ -128,15 +133,15 @@ window.QUIZ = {
 
   // Shown after the last question is marked. Highest matching "min" wins.
   scoreMessages: [
-    { min: 0, text: "Clearly I need to talk about myself more." },
-    { min: 12, text: "Not bad. You've been listening." },
-    { min: 18, text: "Very impressive. You know us well." },
-    { min: 24, text: "Perfect score. Of course." }
+    { min: 0, text: "Seriously? I thought you were better than this." },
+    { min: 12, text: "This is quite unremarkable. Expected better." },
+    { min: 18, text: "Very impressive. You know yourself well." },
+    { min: 24, text: "Perfect, just like you of course." }
   ],
 
   finalMessage:
     "Happy birthday.\n" +
-    "[Write your birthday message here. A few lines is plenty.]\n" +
+    "[Thank you for all you do for me. Hope you have a wonderful day.]\n" +
     "Love, Nick"
 };
 
@@ -481,7 +486,7 @@ main {
     <p class="hero__date" id="birthday"></p>
     <h1 class="hero__title">
       <span class="hero__count" id="count">24</span>
-      <span class="hero__line">things I love about <span id="her-name"></span></span>
+      <span class="hero__line">things I adore about you</span>
     </h1>
     <p class="hero__intro" id="intro"></p>
   </header>
@@ -552,7 +557,6 @@ main {
   }
 
   // ---------- Header ----------
-  document.getElementById("her-name").textContent = QUIZ.herName;
   document.getElementById("birthday").textContent = QUIZ.birthdayLabel || "";
   document.getElementById("intro").textContent = QUIZ.intro || "";
   document.getElementById("count").textContent = total;
