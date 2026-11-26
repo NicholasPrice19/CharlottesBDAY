@@ -62,7 +62,7 @@ window.QUIZ = {
           q: "What's your favourite colour?",
           choices: ["Pink", "Orange", "Green", "Yellow"],
           answer: "Green",
-          note: "Looking past that you only said this because it was my favourite colour... Pink just worked better for this formatting. Also, much to my surprise, not a complement of green.",
+          note: "Looking past that you only said this because it was my favourite colour... and in the craziest of circumstances... Pink just worked better for this formatting. Also, much to my surprise, not a complement of green.",
           wrongNote: "Wrong. You only picked it to match me, and you still forgot."
         },
         {
@@ -74,7 +74,7 @@ window.QUIZ = {
           answer: "Reels, I think.",
           note: "But I'm not even sure. Sorry."
         },
-        { q: "What's your go-to coffee order?", answer: "Almond latte, even though it tastes terrible." },
+        { q: "What's your go to coffee order?", answer: "Almond latte, even though it tastes terrible." },
         { q: "What's your favourite TV show?", answer: "How I Met Your Mother", note: "In English and French." },
         {
           q: "Who are Charlotte's housemates?",
@@ -90,26 +90,26 @@ window.QUIZ = {
       questions: [
         {
           q: "What does Charlotte need to fall asleep?",
-          choices: ["Silence", "A podcast", "Rain sounds", "Nick"],
+          choices: ["Silence", "Leaf blower man", "Rain sounds", "Nick"],
           answer: "Rain sounds",
-          note: "Even when it's actually raining outside.",
-          wrongNote: "Wrong. The rain sounds win every time."
+          note: "I'm offended, but they work, I must say. Also, fuck the leaf blower man.",
+          wrongNote: "Wrong. The rain sounds win every time. Also, fuck the leaf blower man."
         },
         {
           q: "What's the quickest way to die?",
           answer: "Steal Charlotte's Tim Tams"
         },
-        { q: "What does Charlotte turn into during exams?", answer: "Academic weapon or lil minga", note: "Both are the right answer. ¿Por qué no los dos?" },
-        { q: "List some of Charlotte's skills.", answer: "Gun skier, mediocre crossworder, terrible memory" },
+        { q: "What does Charlotte turn into during exams?", answer: "Academic weapon or lil minga?", note: "Both are the right answer. ¿Por qué no los dos?" },
+        { q: "List some of Charlotte's skills and attributes.", answer: "Gun skier, mediocre crossworder, terrible memory" },
         {
           q: "How many blonde moments does Charlotte have in a day?",
           choices: ["None", "One or two", "Too many to count", "She can't remember"],
           answer: "She can't remember",
-          note: "Natural blonde, natural talent. Pairs nicely with the terrible memory.",
-          wrongNote: "And you've just proved my point."
+          note: "Fake blonde, natural talent. Pairs nicely with the terrible memory.",
+          wrongNote: "Anddddddd you've just proved my point."
         },
         {
-          q: "What's Charlotte's excuse for all of the above?",
+          q: "What's Charlotte's excuse for **the** way she is?",
           answer: "The brain injury.",
           note: "Doctors remain baffled. So do I. Autism chamber is a nice touch though."
         }
@@ -126,7 +126,7 @@ window.QUIZ = {
           photo: "first-met.jpg",   // upload the photo to the repo with this exact name
           photoCaption: ""
         },
-        { q: "When did we start dating?", answer: "[Date, and where we were]", note: "[The moment I knew]" },
+        { q: "When did we start dating?", answer: "1 October 2026", note: "Well overdue... but you better remember this." },
         {
           q: "What's my favourite photo of us?",
           answer: "You're so cute!!",
@@ -140,9 +140,9 @@ window.QUIZ = {
         },
         {
           q: "What's on the menu when Nick comes over?",
-          choices: ["A home-cooked meal", "Takeaway, her shout", "A Tim Tam, if he's lucky", "Nothing"],
+          choices: ["Chicken burgers", "Takeaway, her shout", "Frozen bread", "Nothing"],
           answer: "Nothing",
-          note: "Not even a Tim Tam. It's OK though, I'll keep feeding you.",
+          note: "THIS IS A JOKE HOLY MOLY. I do appreciate everything you make me, but I'll also continue feeding you too.",
           wrongNote: "Generous. Wrong, but generous."
         },
         {
@@ -162,8 +162,8 @@ window.QUIZ = {
         { q: "What do I love most about how you treat me?", answer: "Back and arm scratches obviously", note: "I'm quite a simple creature." },
         { q: "What do you do better than anyone I know?", answer: "Interupt me...", note: "You're going toe to toe with my mum at this point." },
         { q: "When did you make me proudest?", answer: "All the time, I love speaking about you, even if it annoys everyone.", note: "Was tempted to say when you are racist but that's not kosher." },
-        { q: "What am I excited about in the next year with you?", answer: "Travelling and skiing", note: "I love how adventurous you are. So excited to join you in your expeditions." },
-        { q: "What's the 24th thing I love about you?", answer: "Your positivity", note: "You're a ray of sunshine. You make the gloomiest of days, bearable." }
+        { q: "What am I excited about in the next year with you?", answer: "Travelling and skiing", note: "I love how adventurous you are. So excited to join you in your travels." },
+        { q: "What's the 24th thing I love most about you?", answer: "Your positivity", note: "You're a ray of sunshine. You make the gloomiest of days, bearable." }
       ]
     }
   ],
@@ -336,6 +336,8 @@ main {
 }
 
 .q.is-correct .q__num { color: var(--plum); }
+
+.q__text strong { font-weight: 800; }
 
 .q__text {
   margin: 0.25rem 0 1rem;
@@ -609,6 +611,16 @@ main {
     return node;
   }
 
+  // Same as el(), but text wrapped in **double asterisks** shows in bold.
+  function elRich(tag, className, text) {
+    var node = el(tag, className);
+    String(text == null ? "" : text).split("**").forEach(function (part, k) {
+      if (!part) return;
+      node.appendChild(k % 2 ? el("strong", null, part) : document.createTextNode(part));
+    });
+    return node;
+  }
+
   function paragraphs(container, text) {
     String(text || "").split("\n").forEach(function (line) {
       if (line.trim()) container.appendChild(el("p", null, line));
@@ -647,7 +659,7 @@ main {
     li.appendChild(el("span", "q__num", String(i + 1)));
 
     var body = el("div", "q__body");
-    body.appendChild(el("p", "q__text", data.q));
+    body.appendChild(elRich("p", "q__text", data.q));
 
     var controls = el("div", "q__controls");
     var choiceButtons = [];
@@ -674,10 +686,10 @@ main {
     var reveal_ = el("div", "reveal");
     reveal_.hidden = true;
     // Multiple choice already highlights the answer, so only open questions print it.
-    if (!choiceButtons.length) reveal_.appendChild(el("p", "reveal__answer", data.answer));
+    if (!choiceButtons.length) reveal_.appendChild(elRich("p", "reveal__answer", data.answer));
     // Multiple choice can have a separate note for a wrong pick.
-    var noteRight = data.note ? el("p", "reveal__note", data.note) : null;
-    var noteWrong = choiceButtons.length && data.wrongNote ? el("p", "reveal__note", data.wrongNote) : null;
+    var noteRight = data.note ? elRich("p", "reveal__note", data.note) : null;
+    var noteWrong = choiceButtons.length && data.wrongNote ? elRich("p", "reveal__note", data.wrongNote) : null;
     if (noteRight) reveal_.appendChild(noteRight);
     if (noteWrong) reveal_.appendChild(noteWrong);
     if (data.photo) {
