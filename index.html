@@ -29,7 +29,8 @@
        { q: "Question text",
          choices: ["Option A", "Option B", "Option C", "Option D"],
          answer: "Option B",            // must match one choice exactly
-         note: "Why I love it" }
+         note: "Shown if she gets it right",
+         wrongNote: "Shown if she gets it wrong" }   // optional
 
   Optional on any question:
        photo: "first-date.jpg"   // upload the image to the repo next to index.html
@@ -61,7 +62,8 @@ window.QUIZ = {
           q: "What's your favourite colour?",
           choices: ["Pink", "Orange", "Green", "Yellow"],
           answer: "Green",
-          note: "Looking past that you only said this because it was my favourite colour... Pink just worked better for this formatting. Also, much to my surprise, not a complement of green."
+          note: "Looking past that you only said this because it was my favourite colour... Pink just worked better for this formatting. Also, much to my surprise, not a complement of green.",
+          wrongNote: "Wrong. You only picked it to match me, and you still forgot."
         },
         {
           q: "What's your death row meal?",
@@ -72,26 +74,8 @@ window.QUIZ = {
           answer: "Reels, I think.",
           note: "But I'm not even sure. Sorry."
         },
-        {
-          q: "What reward does Nick get when he's behaving?",
-          answer: "A banana Chobani Fit",
-          note: "With a questionable expiry date."
-        },
-        {
-          q: "What's the quickest way to die?",
-          answer: "Steal Charlotte's Tim Tams"
-        }
-      ]
-    },
-
-    {
-      title: "Round 2: The little things",
-      questions: [
         { q: "What's your go-to coffee order?", answer: "Almond latte, even though it tastes terrible." },
-        { q: "Charlotte has a few stims she says regularly. List at least 3 of them.", answer: "Lush, Diva, [stim 3]" },
         { q: "What's your favourite TV show?", answer: "How I Met Your Mother", note: "In English and French." },
-        { q: "What does Charlotte turn into during exams?", answer: "Academic weapon or lil minga", note: "Both are the right answer. ¿Por qué no los dos?" },
-        { q: "List some of Charlotte's skills.", answer: "Gun skier, mediocre crossworder, terrible memory" },
         {
           q: "Who are Charlotte's housemates?",
           answer: "Matt, Chris and Elsa (+ Maddi Chong)",
@@ -102,31 +86,39 @@ window.QUIZ = {
     },
 
     {
-      title: "Round 3: Us",
+      title: "Round 2: The little things",
       questions: [
         {
-          q: "What's my favourite photo of you?",
-          answer: "This one.",
-          photo: "",          // add the image file name here, e.g. "favourite.jpg"
-          photoCaption: ""
+          q: "What does Charlotte need to fall asleep?",
+          choices: ["Silence", "A podcast", "Rain sounds", "Nick"],
+          answer: "Rain sounds",
+          note: "Even when it's actually raining outside.",
+          wrongNote: "Wrong. The rain sounds win every time."
         },
+        {
+          q: "What's the quickest way to die?",
+          answer: "Steal Charlotte's Tim Tams"
+        },
+        { q: "What does Charlotte turn into during exams?", answer: "Academic weapon or lil minga", note: "Both are the right answer. ¿Por qué no los dos?" },
+        { q: "List some of Charlotte's skills.", answer: "Gun skier, mediocre crossworder, terrible memory" },
         {
           q: "How many blonde moments does Charlotte have in a day?",
           choices: ["None", "One or two", "Too many to count", "She can't remember"],
           answer: "She can't remember",
-          note: "Natural blonde, natural talent. Pairs nicely with the terrible memory."
-        },
-        {
-          q: "Which is better, skiing or snowboarding?",
-          choices: ["Skiing", "Snowboarding"],
-          answer: "Skiing",
-          note: "I guess you're always right! Pairs nicely with your naarmy snowboarder boyfriend.."
+          note: "Natural blonde, natural talent. Pairs nicely with the terrible memory.",
+          wrongNote: "And you've just proved my point."
         },
         {
           q: "What's Charlotte's excuse for all of the above?",
           answer: "The brain injury.",
           note: "Doctors remain baffled. So do I. Autism chamber is a nice touch though."
-        },
+        }
+      ]
+    },
+
+    {
+      title: "Round 3: Us",
+      questions: [
         {
           q: "What did I look like the first time we met?",
           answer: "This, unfortunately.",
@@ -134,11 +126,31 @@ window.QUIZ = {
           photo: "first-met.jpg",   // upload the photo to the repo with this exact name
           photoCaption: ""
         },
+        { q: "When did we start dating?", answer: "[Date, and where we were]", note: "[The moment I knew]" },
+        {
+          q: "What's my favourite photo of us?",
+          answer: "You're so cute!!",
+          photo: "",          // add the image file name here, e.g. "favourite.jpg"
+          photoCaption: ""
+        },
+        {
+          q: "What reward does Nick get when he's behaving?",
+          answer: "A banana Chobani Fit",
+          note: "With a questionable expiry date."
+        },
         {
           q: "What's on the menu when Nick comes over?",
           choices: ["A home-cooked meal", "Takeaway, her shout", "A Tim Tam, if he's lucky", "Nothing"],
           answer: "Nothing",
-          note: "Not even a Tim Tam. It's OK though, I'll keep feeding you."
+          note: "Not even a Tim Tam. It's OK though, I'll keep feeding you.",
+          wrongNote: "Generous. Wrong, but generous."
+        },
+        {
+          q: "Which is better, skiing or snowboarding?",
+          choices: ["Skiing", "Snowboarding"],
+          answer: "Skiing",
+          note: "I guess you're always right! Pairs nicely with your naarmy snowboarder boyfriend..",
+          wrongNote: "Correct, actually. But you don't believe that, so no point."
         }
       ]
     },
@@ -147,12 +159,11 @@ window.QUIZ = {
       title: "Round 4: Why you",
       intro: "Now for the gross stuff.",
       questions: [
-        { q: "What do I love most about how you treat people?", answer: "[Answer]", note: "[An example]" },
-        { q: "What do you do better than anyone I know?", answer: "[Answer]", note: "[An example]" },
-        { q: "When did you make me proudest?", answer: "[Moment]", note: "[Why]" },
-        { q: "What's the best advice you've ever given me?", answer: "[Advice]", note: "[What happened after]" },
-        { q: "What do I want to do with you next year?", answer: "[Plan]", note: "[Why you can't wait]" },
-        { q: "What's the 24th thing I love about you?", answer: "[The big one]", note: "[Say it properly]" }
+        { q: "What do I love most about how you treat me?", answer: "Back and arm scratches obviously", note: "I'm quite a simple creature." },
+        { q: "What do you do better than anyone I know?", answer: "Interupt me...", note: "You're going toe to toe with my mum at this point." },
+        { q: "When did you make me proudest?", answer: "All the time, I love speaking about you, even if it annoys everyone.", note: "Was tempted to say when you are racist but that's not kosher." },
+        { q: "What am I excited about in the next year with you?", answer: "Travelling and skiing", note: "I love how adventurous you are. So excited to join you in your expeditions." },
+        { q: "What's the 24th thing I love about you?", answer: "Your positivity", note: "You're a ray of sunshine. You make the gloomiest of days, bearable." }
       ]
     }
   ],
@@ -160,14 +171,14 @@ window.QUIZ = {
   // Shown after the last question is marked. Highest matching "min" wins.
   scoreMessages: [
     { min: 0, text: "Seriously? I thought you were better than this." },
-    { min: 12, text: "This is quite unremarkable. Expected better." },
+    { min: 12, text: "This is quite unremarkable. Are you drunk? Expected better." },
     { min: 18, text: "Very impressive. You know yourself well." },
     { min: 24, text: "Perfect, just like you of course." }
   ],
 
   finalMessage:
     "Happy birthday.\n" +
-    "[Thank you for all you do for me. Hope you have a wonderful day.]\n" +
+    "[Thank you for all you do for me. Sorry this was a little late (2 months) but hope you had a wonderful day.]\n" +
     "Love, Nick"
 };
 
@@ -176,7 +187,7 @@ window.QUIZ = {
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
 /* ============================================================
    Colours and fonts. Change these to restyle the whole site.
@@ -186,11 +197,12 @@ window.QUIZ = {
   --pink: #FF2E7E;      /* main accent: big numbers, buttons */
   --pink-soft: #FFB8CF; /* borders, hovers */
   --plum: #2A0F2E;      /* text */
-  --butter: #FFC93C;    /* handwritten note slips */
+  --butter: #FFC93C;    /* score in the top bar */
+  --note: #FFF7EC;      /* handwritten note slips */
   --paper: #FFFFFF;
 
   --font-main: "Bricolage Grotesque", system-ui, sans-serif;
-  --font-hand: "Caveat", "Segoe Print", cursive;
+  --font-hand: "Patrick Hand", "Segoe Print", cursive;
 
   --measure: 44rem;
   color-scheme: light;
@@ -294,7 +306,7 @@ main {
 .round__intro {
   margin: 0 0 0.75rem;
   font-family: var(--font-hand);
-  font-size: 1.9rem;
+  font-size: 1.6rem;
   line-height: 1.1;
   color: var(--pink);
 }
@@ -389,17 +401,29 @@ main {
 }
 
 .reveal__note {
+  position: relative;
   display: inline-block;
   max-width: 100%;
-  margin: 0.9rem 0 0;
-  padding: 0.6rem 1rem 0.7rem;
-  background: var(--butter);
+  margin: 1.1rem 0 0;
+  padding: 0.8rem 1rem 0.7rem;
+  background: var(--note);
   font-family: var(--font-hand);
-  font-size: 1.75rem;
-  font-weight: 500;
-  line-height: 1.15;
+  font-size: 1.5rem;
+  line-height: 1.25;
   transform: rotate(-1.2deg);
   box-shadow: 3px 3px 0 var(--plum);
+}
+/* A strip of pink tape holding the note on */
+.reveal__note::before {
+  content: "";
+  position: absolute;
+  top: -0.6rem;
+  left: 50%;
+  width: 4.5rem;
+  height: 1.2rem;
+  background: var(--pink-soft);
+  opacity: 0.85;
+  transform: translateX(-50%) rotate(2deg);
 }
 
 .reveal__photo {
@@ -414,7 +438,7 @@ main {
 .reveal__photo figcaption {
   padding-top: 0.4rem;
   font-family: var(--font-hand);
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   text-align: center;
 }
 
@@ -427,7 +451,9 @@ main {
 
 .verdict {
   margin: 1rem 0 0;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.1;
 }
 .q.is-correct .verdict { color: var(--pink); }
 
@@ -476,8 +502,8 @@ main {
   background: var(--paper);
   color: var(--plum);
   font-family: var(--font-hand);
-  font-size: 1.9rem;
-  line-height: 1.25;
+  font-size: 1.6rem;
+  line-height: 1.3;
   box-shadow: 5px 5px 0 var(--plum);
 }
 .finale__letter p { margin: 0 0 0.6rem; }
@@ -510,7 +536,7 @@ main {
   .q { grid-template-columns: 3rem 1fr; gap: 0 0.75rem; }
   .q__num { font-size: 2.5rem; }
   .q__text { font-size: 1.1875rem; }
-  .reveal__note { font-size: 1.55rem; }
+  .reveal__note { font-size: 1.35rem; }
 }
 
   </style>
@@ -638,7 +664,7 @@ main {
       });
       controls.appendChild(choices);
     } else {
-      var show = el("button", "btn", "Show the answer");
+      var show = el("button", "btn", "Reveal answer");
       show.type = "button";
       show.addEventListener("click", function () { reveal(i); });
       controls.appendChild(show);
@@ -650,7 +676,11 @@ main {
     reveal_.hidden = true;
     // Multiple choice already highlights the answer, so only open questions print it.
     if (!choiceButtons.length) reveal_.appendChild(el("p", "reveal__answer", data.answer));
-    if (data.note) reveal_.appendChild(el("p", "reveal__note", data.note));
+    // Multiple choice can have a separate note for a wrong pick.
+    var noteRight = data.note ? el("p", "reveal__note", data.note) : null;
+    var noteWrong = choiceButtons.length && data.wrongNote ? el("p", "reveal__note", data.wrongNote) : null;
+    if (noteRight) reveal_.appendChild(noteRight);
+    if (noteWrong) reveal_.appendChild(noteWrong);
     if (data.photo) {
       var fig = el("figure", "reveal__photo");
       var img = el("img");
@@ -664,8 +694,8 @@ main {
 
     var mark = el("div", "mark");
     mark.hidden = true;
-    var got = el("button", "btn btn--yes", "I got it");
-    var missed = el("button", "btn btn--no", "I missed it");
+    var got = el("button", "btn btn--yes", "Correct");
+    var missed = el("button", "btn btn--no", "Incorrect");
     got.type = missed.type = "button";
     got.addEventListener("click", function () { markOpen(i, true); });
     missed.addEventListener("click", function () { markOpen(i, false); });
@@ -680,7 +710,7 @@ main {
     body.appendChild(verdict);
     li.appendChild(body);
 
-    nodes[i] = { li: li, controls: controls, choiceButtons: choiceButtons, reveal: reveal_, mark: mark, verdict: verdict };
+    nodes[i] = { li: li, controls: controls, choiceButtons: choiceButtons, reveal: reveal_, mark: mark, verdict: verdict, noteRight: noteRight, noteWrong: noteWrong };
     return li;
   }
 
@@ -730,11 +760,15 @@ main {
     }
 
     n.reveal.hidden = !s.revealed;
+    if (n.noteWrong) {
+      n.noteWrong.hidden = s.correct !== false;
+      if (n.noteRight) n.noteRight.hidden = s.correct === false;
+    }
     if (animate && s.revealed) n.reveal.classList.add("is-new");
 
     n.mark.hidden = isChoice || !s.revealed || s.correct !== null;
     n.verdict.hidden = s.correct === null;
-    n.verdict.textContent = s.correct ? "Point scored" : "No point this time";
+    n.verdict.textContent = s.correct ? "Correct" : "Incorrect";
   }
 
   // ---------- Tally and finale ----------
