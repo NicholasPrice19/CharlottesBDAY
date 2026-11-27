@@ -131,7 +131,7 @@ window.QUIZ = {
         {
           q: "What's my favourite photo of us?",
           answer: "You're so cute!!",
-          photo: "",          // add the image file name here, e.g. "favourite.jpg"
+          photo: "favourite.jpg",   // upload the photo to the repo with this exact name
           photoCaption: ""
         },
         {
@@ -399,7 +399,14 @@ main {
 .reveal { margin-top: 1rem; }
 
 .reveal__answer {
+  width: fit-content;
+  max-width: 100%;
   margin: 0;
+  padding: 0.55rem 1rem;
+  background: var(--pink);
+  color: var(--paper);
+  border: 2px solid var(--plum);
+  box-shadow: 3px 3px 0 var(--plum);
   font-size: 1.5rem;
   font-weight: 800;
   line-height: 1.2;
@@ -463,6 +470,7 @@ main {
 
 /* The one reveal animation: the note slips in when she opens an answer */
 @media (prefers-reduced-motion: no-preference) {
+  .reveal.is-new .reveal__answer,
   .reveal.is-new .reveal__note,
   .reveal.is-new .reveal__photo {
     animation: slip-in 420ms cubic-bezier(.2,.9,.3,1.3) both;
