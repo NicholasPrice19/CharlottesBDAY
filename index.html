@@ -132,7 +132,7 @@ window.QUIZ = {
           q: "What's my favourite photo of us?",
           answer: "You're so cute!!",
           photo: "favourite.jpg",   // upload the photo to the repo with this exact name
-          photoCaption: ""
+          photoCaption: "Also love going to wine bars with you"
         },
         {
           q: "What reward does Nick get when he's behaving?",
@@ -413,28 +413,12 @@ main {
 }
 
 .reveal__note {
-  position: relative;
-  display: inline-block;
   max-width: 100%;
-  margin: 1.1rem 0 0;
-  padding: 0.8rem 1rem 0.7rem;
-  background: var(--note);
+  margin: 1rem 0 0;
+  color: var(--pink);
   font-family: var(--font-hand);
-  font-size: 1.5rem;
-  line-height: 1.25;
-  box-shadow: 3px 3px 0 var(--plum);
-}
-/* A strip of pink tape holding the note on */
-.reveal__note::before {
-  content: "";
-  position: absolute;
-  top: -0.6rem;
-  left: 50%;
-  width: 4.5rem;
-  height: 1.2rem;
-  background: var(--pink-soft);
-  opacity: 0.85;
-  transform: translateX(-50%) rotate(2deg);
+  font-size: 1.75rem;
+  line-height: 1.2;
 }
 
 .reveal__photo {
@@ -548,7 +532,7 @@ main {
   .q { grid-template-columns: 3rem 1fr; gap: 0 0.75rem; }
   .q__num { font-size: 2.5rem; }
   .q__text { font-size: 1.1875rem; }
-  .reveal__note { font-size: 1.35rem; }
+  .reveal__note { font-size: 1.65rem; }
 }
 
   </style>
