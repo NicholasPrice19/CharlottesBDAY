@@ -181,7 +181,16 @@ window.QUIZ = {
     "Happy birthday.\n" +
     "There are obviously so many more things I love about you, but if I went through them all, we'd be here till your next birthday.\n" +
     "Thank you for all you do for me. Sorry this was a little late (over a month), but I hope you had a wonderful day. I love being a part of your life and can't wait for our future together.\n" +
-    "I love you very much, Nick"
+    "I love you very much, Nick",
+
+  // Countdown shown under the final message.
+  // "until" is Melbourne time: +11:00 is daylight saving time, so it's right wherever she is.
+  countdown: {
+    label: "Until you're home",
+    until: "2027-03-07T18:55:00+11:00",
+    dateLabel: "7 March 2027, 6:55pm",
+    doneText: "You're home!"
+  }
 };
 
   </script>
@@ -505,6 +514,52 @@ main {
 .finale__letter p { margin: 0 0 0.6rem; }
 .finale__letter p:last-child { margin-bottom: 0; }
 
+/* Countdown under the final message */
+.countdown { margin-top: 2.5rem; }
+.countdown__label {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+.countdown__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+.countdown__unit {
+  padding: 0.7rem 0.25rem 0.55rem;
+  background: var(--plum);
+  border: 2px solid var(--plum);
+  box-shadow: 3px 3px 0 var(--paper);
+  text-align: center;
+}
+.countdown__num {
+  display: block;
+  font-size: clamp(2rem, 9vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+.countdown__name {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.countdown__date {
+  margin: 0.9rem 0 0;
+  font-weight: 600;
+}
+.countdown__done {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 800;
+}
+
 /* ---------- Footer ---------- */
 .footer {
   max-width: var(--measure);
@@ -558,6 +613,18 @@ main {
     <p class="finale__score" id="finale-score"></p>
     <p class="finale__verdict" id="finale-verdict"></p>
     <div class="finale__letter" id="finale-letter"></div>
+
+    <div class="countdown" id="countdown" hidden>
+      <p class="countdown__label" id="countdown-label"></p>
+      <div class="countdown__grid" id="countdown-grid">
+        <div class="countdown__unit"><span class="countdown__num" id="cd-days">0</span><span class="countdown__name">Days</span></div>
+        <div class="countdown__unit"><span class="countdown__num" id="cd-hours">0</span><span class="countdown__name">Hours</span></div>
+        <div class="countdown__unit"><span class="countdown__num" id="cd-mins">0</span><span class="countdown__name">Mins</span></div>
+        <div class="countdown__unit"><span class="countdown__num" id="cd-secs">0</span><span class="countdown__name">Secs</span></div>
+      </div>
+      <p class="countdown__date" id="countdown-date"></p>
+      <p class="countdown__done" id="countdown-done" hidden></p>
+    </div>
   </section>
 
   <footer class="footer">
@@ -822,6 +889,34 @@ main {
     updateTally(false);
     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   });
+
+  // ---------- Countdown ----------
+  (function () {
+    var cd = QUIZ.countdown;
+    var target = cd && cd.until ? new Date(cd.until).getTime() : NaN;
+    if (isNaN(target)) return;
+    document.getElementById("countdown").hidden = false;
+    document.getElementById("countdown-label").textContent = cd.label || "";
+    document.getElementById("countdown-date").textContent = cd.dateLabel || "";
+    var ids = ["cd-days", "cd-hours", "cd-mins", "cd-secs"].map(function (id) { return document.getElementById(id); });
+    var timer;
+    function tick() {
+      var left = Math.floor((target - Date.now()) / 1000);
+      if (left <= 0) {
+        clearInterval(timer);
+        document.getElementById("countdown-grid").hidden = true;
+        document.getElementById("countdown-date").hidden = true;
+        var done = document.getElementById("countdown-done");
+        done.textContent = cd.doneText || "";
+        done.hidden = false;
+        return;
+      }
+      var parts = [Math.floor(left / 86400), Math.floor(left / 3600) % 24, Math.floor(left / 60) % 60, left % 60];
+      parts.forEach(function (v, k) { ids[k].textContent = k ? String(v).padStart(2, "0") : String(v); });
+    }
+    tick();
+    timer = setInterval(tick, 1000);
+  })();
 
   // ---------- Confetti ----------
   function prefersReducedMotion() {
