@@ -554,6 +554,11 @@ main {
   margin: 0.9rem 0 0;
   font-weight: 600;
 }
+.countdown--top { margin-top: 2rem; max-width: 30rem; }
+.countdown--top .countdown__label { color: var(--pink); }
+.countdown--top .countdown__unit { color: var(--paper); box-shadow: 3px 3px 0 var(--pink); }
+.countdown--top .countdown__num { font-size: clamp(1.75rem, 8vw, 2.75rem); }
+
 .countdown__done {
   margin: 0;
   font-size: 2.25rem;
@@ -600,6 +605,7 @@ main {
       <span class="hero__line">things I love about you</span>
     </h1>
     <p class="hero__intro" id="intro"></p>
+    <div class="countdown countdown--top" hidden></div>
   </header>
 
   <div class="tally" role="status" aria-live="polite">
@@ -614,17 +620,7 @@ main {
     <p class="finale__verdict" id="finale-verdict"></p>
     <div class="finale__letter" id="finale-letter"></div>
 
-    <div class="countdown" id="countdown" hidden>
-      <p class="countdown__label" id="countdown-label"></p>
-      <div class="countdown__grid" id="countdown-grid">
-        <div class="countdown__unit"><span class="countdown__num" id="cd-days">0</span><span class="countdown__name">Days</span></div>
-        <div class="countdown__unit"><span class="countdown__num" id="cd-hours">0</span><span class="countdown__name">Hours</span></div>
-        <div class="countdown__unit"><span class="countdown__num" id="cd-mins">0</span><span class="countdown__name">Mins</span></div>
-        <div class="countdown__unit"><span class="countdown__num" id="cd-secs">0</span><span class="countdown__name">Secs</span></div>
-      </div>
-      <p class="countdown__date" id="countdown-date"></p>
-      <p class="countdown__done" id="countdown-done" hidden></p>
-    </div>
+    <div class="countdown" hidden></div>
   </section>
 
   <footer class="footer">
@@ -895,24 +891,39 @@ main {
     var cd = QUIZ.countdown;
     var target = cd && cd.until ? new Date(cd.until).getTime() : NaN;
     if (isNaN(target)) return;
-    document.getElementById("countdown").hidden = false;
-    document.getElementById("countdown-label").textContent = cd.label || "";
-    document.getElementById("countdown-date").textContent = cd.dateLabel || "";
-    var ids = ["cd-days", "cd-hours", "cd-mins", "cd-secs"].map(function (id) { return document.getElementById(id); });
+    var names = ["Days", "Hours", "Mins", "Secs"];
+    var boxes = Array.prototype.map.call(document.querySelectorAll(".countdown"), function (box) {
+      box.appendChild(el("p", "countdown__label", cd.label || ""));
+      var grid = el("div", "countdown__grid");
+      var nums = names.map(function (name) {
+        var unit = el("div", "countdown__unit");
+        var num = el("span", "countdown__num", "0");
+        unit.appendChild(num);
+        unit.appendChild(el("span", "countdown__name", name));
+        grid.appendChild(unit);
+        return num;
+      });
+      box.appendChild(grid);
+      var date = el("p", "countdown__date", cd.dateLabel || "");
+      var done = el("p", "countdown__done", cd.doneText || "");
+      done.hidden = true;
+      box.appendChild(date);
+      box.appendChild(done);
+      box.hidden = false;
+      return { grid: grid, nums: nums, date: date, done: done };
+    });
     var timer;
     function tick() {
       var left = Math.floor((target - Date.now()) / 1000);
       if (left <= 0) {
         clearInterval(timer);
-        document.getElementById("countdown-grid").hidden = true;
-        document.getElementById("countdown-date").hidden = true;
-        var done = document.getElementById("countdown-done");
-        done.textContent = cd.doneText || "";
-        done.hidden = false;
+        boxes.forEach(function (b) { b.grid.hidden = true; b.date.hidden = true; b.done.hidden = false; });
         return;
       }
       var parts = [Math.floor(left / 86400), Math.floor(left / 3600) % 24, Math.floor(left / 60) % 60, left % 60];
-      parts.forEach(function (v, k) { ids[k].textContent = k ? String(v).padStart(2, "0") : String(v); });
+      boxes.forEach(function (b) {
+        parts.forEach(function (v, k) { b.nums[k].textContent = k ? String(v).padStart(2, "0") : String(v); });
+      });
     }
     tick();
     timer = setInterval(tick, 1000);
